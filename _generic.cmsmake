@@ -1,0 +1,46 @@
+#
+#
+#         Name: _GENERIC CMSMAKE (initial rules for CMS 'make')
+#         Date: 2006-May-23 (Monday)
+#               This file is part of the CMS Make package.
+#               These values are loaded by CMS Make before any others.
+#
+#
+
+# standard stuff
+MAKE            =       make
+SUFFIXES        =       .a .o .c .s .h .module \
+                        .txtlib .text .loadlib .assemble
+AS              =       cmsmkas
+CC              =       cmsmkcc
+LD              =       cmsmkld
+AR              =       cmsmkar
+
+# the following are inherited in other 'make' implementations
+SHELL           =       /bin/sh
+MACHTYPE        =       CMS
+#MACHTYPE       =       i686-suse-linux, so probably combo
+#HOSTTYPE       =       CMS
+#HOSTTYPE       =       i386, so probably hardware
+OSTYPE          =       CMS
+
+# the following is obviously unique to CMS
+BFSROOT         =       /../VMBFS:VMSYS:ROOT/
+
+# the following are not universal, but common
+O               =       .text
+SO              =       .loadlib
+A               =       .txtlib
+E               =       .module
+#EXE            =       .module
+
+STRIP           =       #strip
+RANLIB          =       #ranlib
+
+#                       C pre-processor command
+#CPP            =       cmsmkcc -E
+
+#                       C++ compiler command
+#CXX            =
+
+

@@ -1,0 +1,129 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: CMSMKCC EXEC                                          *
+ *        Date: 2006-Nov-27 (Mon)                                     *
+ *              This program is part of the CMS Make package.         *
+ *              This EXEC drives the C compiler from POSIX syntax.    *
+ *                                                                    *
+ *                                                                    */
+
+of = "" ;  lf = ""
+opts = ""
+list = "NOLIST"
+link = 1
+defs = ""
+defs = "OPENVM=1"
+opts = "LONGNAME"
+verbose = 0
+
+/* parse command-line and options */
+Parse Source cms cmd argu . . arg0 .
+Parse Arg args
+Parse Var args arg1 .
+Do While Left(arg1,1) = "-"
+  /* remove this token from the args list */
+  Parse Var args . args
+  /* split this token into left and right at a possible equals sign */
+  Parse Var arg1 arg1l '=' arg1r
+  Select
+    When Abbrev("-c",arg1,2) Then link = 0
+    When Abbrev("-o",arg1,2) Then Parse Var args of args
+    When Left(arg1,2) = "-e" Then Do
+      nop
+    End
+    When Abbrev("-h",arg1,2) | Abbrev("--help",arg1,6) Then Do
+      'PIPE COMMAND HELP CMS' argu '(NOSCREEN' ,
+        '| NLOCATE 1.10 /DMSHLL355I/ | UNIQ | CONSOLE'
+      Exit rc
+    End /* When .. Do */
+    When Abbrev("-fPIC",arg1,4) Then nop      /* '-fPIC' ignored here */
+    When Left(arg1,2) = "-D" Then defs = defs Substr(arg1,3)
+    Otherwise Do
+      Address "COMMAND" 'XMITMSG 3 ARG1 (ERRMSG CALLER URL'
+      Exit 24
+    End /* Otherwise Do */
+  End /* Select */
+  Parse Var args arg1 .
+End /* Do While */
+
+If defs ^= "" Then opts = opts ,
+  "DEFINE(" || Translate(Space(defs),","," ") || ")"
+
+
+Do While args ^= ""
+  Parse Var args file args
+
+  Parse Upper Var file ifn '.' ift '.' .
+  If ift = "" Then ift = "C"
+
+  _lf = lf
+  If _lf = "" Then Parse Var file _lf '.' .
+  Parse Upper Var _lf lfn '.' lft '.' .
+  If lfn = "" Then lfn = ifn
+  If lft = "" Then lft = "L"
+
+  _sf = sf
+  If _sf = "" Then Parse Var file _sf '.' .
+  Parse Upper Var _sf sfn '.' sft '.' .
+  If sfn = "" Then sfn = ifn
+  If sft = "" Then sft = "S"
+
+  _of = of
+  If _of = "" Then Parse Var file _of '.' .
+  Parse Upper Var _of ofn '.' oft '.' .
+  If ofn = "" Then ofn = ifn
+
+  Address "COMMAND" 'GLOBAL LOADLIB SCEERUN'
+If verbose Then      Say "CC" ifn "(" list opts
+  Address "COMMAND" 'EXEC CC' ifn '(' list opts ;  _rc = rc
+  Address "COMMAND" 'ERASE' lfn lft 'A'
+  Address "COMMAND" 'RENAME' ifn 'LISTING A' lfn lft 'A'
+/* If _rc ^= 0 Then Exit _rc */
+  If _rc > 4 Then Exit _rc
+
+  If ^link Then Do
+    If oft = "" Then oft = "O"
+    Address "COMMAND" 'ERASE' ofn oft 'A'
+    Address "COMMAND" 'RENAME' ifn 'TEXT A' ofn oft 'A'
+    Exit
+  End /* If .. Do */
+
+  Address "COMMAND" 'GLOBAL TXTLIB SCEELKED'
+  Address "COMMAND" 'LOAD' ifn '(NOMAP'
+  If _rc ^= 0 Then Exit _rc
+  Address "COMMAND" 'GENMOD' ifn
+  If _rc ^= 0 Then Exit _rc
+  Address "COMMAND" 'ERASE' ifn 'TEXT A'
+
+  If oft = "" Then oft = "MODULE"
+  Address "COMMAND" 'RENAME' ifn 'MODULE A' ofn oft 'A'
+
+
+End
+
+
+
+
+
+
+/*
+   gcc
+    -Wmissing-prototypes
+    -Wformat
+    -DNO_IPV6
+    -DNO_EPOLL
+    -g
+    -O
+    -I.
+    -I../../include
+    -DLINUX2
+    -o master
+     master.o master_conf.o master_ent.o master_sig.o master_avail.o
+     master_spawn.o master_service.o master_status.o master_listen.o
+     master_vars.o master_wakeup.o master_flow.o
+     ../../lib/libglobal.a ../../lib/libutil.a
+    -ldb
+    -lnsl
+    -lresolv
+ */
+

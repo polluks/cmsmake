@@ -1,0 +1,49 @@
+.cm
+.cm
+.cm       Name: TOUCH HELPCMS
+.cm       Date: 2006-Dec-07 (Thursday)
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+ CMS TOUCH
+
+ Change the update time of a file without updating its contents.
+.cs 1 off
+
+.cs 2 on
+ Use 'touch' to set the update time of a file on minidisk or in SFS.
+
+ The syntax is:
+ +-----------+---------------------------------------------------------+
+ |   touch   |   [-r reffile]  file                                    |
+ +-----------+---------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+¢|Options¢%
+
+  -r    reffile
+.cs 3 off
+
+.cs 6 on
+¢|Return Codes¢%
+
+ Return codes from TOUCH EXEC are based on filesystem work, except:
+
+ 24 missing filetype
+    CMS files must have both filename and filetype.
+    The default filename for 'touch' is the username.
+    There is no default filetype.
+.cs 6 off
+
+.cs 7 on
+See the following related topics:
+
+
+cms make                CMS Make for file maintenance
+oshell touch            Help with OpenVM 'touch' for POSIX files
+cms wget                CMS WGET for file transfer
+cms curl                CMS CURL for file transfer
+
+.cs 7 off

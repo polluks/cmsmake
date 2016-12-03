@@ -1,0 +1,39 @@
+.cm
+.cm
+.cm       Name: VARIABLE HELPMAKE
+.cm       Date: 2006-Dec-10 (Sunday)
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+ CMS Make Variables
+
+$(MAKE)         =       make
+$(SUFFIXES)     =       .a .o .c .s .h   # and more
+$(HOSTNAME)     =       # set from VM/CP (via Diag 08)
+$(HOSTTYPE)     =       s390 (for CMS) -or- s390x (for z/CMS)
+$(MACHTYPE)     =       CMS
+$(OSTYPE)       =       CMS
+$(BFSROOT)      =       /../VMBFS:VMSYS:ROOT/
+$(SHELL)        =       /bin/sh
+
+# assembler command
+$(AS)           =       cmsmkas
+
+# C language compiler command
+$(CC)           =       cmsmkcc
+
+# link/load command
+$(LD)           =       cmsmkld
+
+.cm   # archive (library builder) command
+.cm   AR              =
+
+.cm   #                       C pre-processor command
+.cm   CPP             =       cmsmkcc -E
+
+.cm   #                       C++ compiler command
+.cm   CXX             =
+
+
+

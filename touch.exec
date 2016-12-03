@@ -1,0 +1,78 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: TOUCH EXEC                                            *
+ *        Date: 2006-Nov-04 (Saturday)                                *
+ *              This program is part of the CMS Make package.         *
+ *                                                                    *
+ *        Note: It might be better to use SETDATE for this,           *
+ *              but it turns out that we still have other issues.     *
+ *              So here we limp along best we can with DMSPLU.        *
+ *                                                                    *
+ *              Other tools include Kris Buelens' FIXDATE from        *
+ *    http://www.vm.ibm.com/download/packages/descript.cgi?FIXDATE    *
+ *                                                                    *
+ *                                                                    */
+
+make_version = "2.0.30"
+
+Parse Arg args '(' . ')' .
+
+forced = 0
+ref = ""
+Do While Left(args,1) = "-"
+  Parse Var args argn args
+  Select /* argn */
+    When Abbrev("-a",argn,2) Then nop /* not implemented */
+    When Abbrev("-m",argn,2) Then nop /* this is the default */
+    When Abbrev("-r",argn,2) Then Parse Var args ref args
+    When Abbrev("-f",argn,2) Then forced = 1
+    When Abbrev("--version",argn,9) Then Do
+      Parse Source . . argu .
+      'PIPE VAR MAKE_VERSION' ,
+        '| SPEC /CMS Make/ NW W 1 NW /' || argu || '/ NW | CONSOLE'
+      Exit 0
+    End /* When .. Do */
+    Otherwise Do
+      Address "COMMAND" 'XMITMSG 3 ARGN (ERRMSG'
+      Exit 24
+    End /* Otherwise Do */
+  End /* Select */
+End /* Do While */
+
+/* parse filename into CMS fileID parts */
+Parse Upper Var args fn '.' ft '.' .
+If ft = "" Then Do
+  Address "COMMAND" 'XMITMSG 54 (ERRMSG CALLER ERS'
+  Exit 24
+End /* If .. Do */
+
+/* default filename is the userid */
+If fn = "" Then fn = Userid()
+
+/* date to stamp is current time or based on a reference file */
+If ref = "" Then Do
+  dd = Date('U') ;  tt = Time()
+     End ;  Else Do
+  Parse Upper Var ref rn '.' rt '.' .
+  Address "COMMAND" 'PIPE COMMAND LISTFILE' rn rt 'A (DATE' ,
+    '| DROP FIRST | SPEC W 8 1 WRITE W 9 1' ,
+    '| VAR DD | DROP | VAR TT'
+End /* If .. Then .. Else */
+
+/* now try to stamp the file */
+Address "COMMAND" 'DMSPLU' fn ft 'A' dd tt
+/* but if it does not exist then create it now */
+If rc = 28 Then Do
+  'PIPE COMMAND CREATE FILE' fn ft 'A | STEM RS.'
+  If rc = 74 | ref ^= "" Then Do
+    'PIPE' ,
+      'STRLITERAL #/* this file intentionally left blank */#' ,
+      '| >' fn ft 'A'
+  End /* If .. Do */
+  Address "COMMAND" 'DMSPLU' fn ft 'A' dd tt
+  If rc = 100 Then rc = 0
+End /* If .. Do */
+Exit rc
+
+
+

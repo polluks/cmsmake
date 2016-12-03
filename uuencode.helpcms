@@ -1,0 +1,43 @@
+.cm
+.cm
+.cm       Name: UUENCODE HELPCMS
+.cm       Date: 2007 and following
+.cm             distributed with "CMS Make"
+.cm
+.cm
+.cs 1 on
+UUENCODE EXEC
+
+encode a binary file
+.cs 1 off
+
+.cs 2 on
+Use 'uuencode' to encode a binary file for safe transport.
+
+The purpose of the UUENCODE EXEC is to render a binary file in Base 64
+notation so that it can be sent as plain text and received intact.
+
++--------------+-------------------------------------------------------+
+|   uuencode   |   -m [inputfile] outputfile                           |
++--------------+-------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+¢|Parameters¢%
+
+  -m          required flag indicating use of MIME Base 64 algorithm
+              the historical 'uuencode' algorithm is not supported
+              and the command syntax is intended to match Unix and Linux
+
+  inputfile   the file to be encoded
+
+  outputfile  the name to be used when it is read with 'uudecode'
+.cs 3 off
+
+.cs 7 on
+See the following related topics:
+
+
+cms uudecode            CMS uudecode command
+
+.cs 7 off

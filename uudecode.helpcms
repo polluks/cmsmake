@@ -1,0 +1,37 @@
+.cm
+.cm
+.cm       Name: UUDECODE HELPCMS
+.cm       Date: 2007 and following
+.cm             distributed with "CMS Make"
+.cm
+.cm
+.cs 1 on
+UUDECODE EXEC
+
+decode a uuencoded file
+.cs 1 off
+
+.cs 2 on
+Use 'uudecode' to decode a uuencoded file after transport.
+
+The purpose of the UUDECODE EXEC is to recover the binary content
+from a uuencoded stream.
+
++--------------+-------------------------------------------------------+
+|   uudecode   |   [inputfile]                                         |
++--------------+-------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+›|Parameters›%
+
+  inputfile   the file to be decoded
+.cs 3 off
+
+.cs 7 on
+See the following related topics:
+
+
+cms uuencode            CMS uuencode command
+
+.cs 7 off

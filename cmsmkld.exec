@@ -1,0 +1,89 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: CMSMKLD EXEC                                          *
+ *        Date: 2006-Dec-04 (Monday)                                  *
+ *              This program is part of the CMS Make package.         *
+ *              This EXEC drives the loader from POSIX syntax.        *
+ *                                                                    *
+ *                                                                    */
+
+of = ""
+fn = "#CMSMKLD"
+opt1 = "" ;  opt2 = "" ;  libs = ""
+map = "NOMAP"
+entry = ""
+
+/* parse command-line and options */
+Parse Source cms cmd argu . . arg0 .
+Parse Arg args
+Parse Var args arg1 .
+Do While Left(arg1,1) = "-"
+  /* remove this token from the args list */
+  Parse Var args . args
+  /* split this token into left and right at a possible equals sign */
+  Parse Var arg1 arg1l '=' arg1r
+  Select
+    When Abbrev("-o",arg1,2) Then Parse Var args of args
+    When Left(arg1,2) = "-l" Then Do
+      lib = Substr(arg1,3)
+      libs = libs lib
+    End /* library to include */
+    When Left(arg1,2) = "-L" Then Do
+      nop
+    End /* library to include */
+    When Abbrev("-M",arg1,2) ,
+       | Abbrev("--print-map",arg1,11) Then map = "MAP"
+    When Abbrev("-e",arg1,2) Then Parse Var args entry args
+    When Abbrev("--entry",arg1l,5) Then entry = arg1r
+    When Abbrev("-h",arg1,2) | Abbrev("--help",arg1,6) Then Do
+      'CALLPIPE COMMAND HELP CMS' argu '(NOSCREEN' ,
+        '| NLOCATE 1.10 /DMSHLL355I/ | UNIQ | *.OUTPUT:'
+      Exit rc
+    End /* When .. Do */
+    Otherwise Do
+      Address "COMMAND" 'XMITMSG 3 ARG1 (ERRMSG CALLER URL'
+      Exit 24
+    End /* Otherwise Do */
+  End /* Select */
+  Parse Var args arg1 .
+End /* Do While */
+If entry ^= "" Then opt1 = "RESET" entry
+
+/* set TXTLIB search per this invokation */
+'PIPE COMMAND Q TXTLIB' ,
+  '| NLOCATE 1.15 /TXTLIB   = NONE/' ,
+  '| CHANGE 1.11 /TXTLIB   = //' ,
+  '| CHANGE /  / / | CHANGE /  / / | CHANGE /  / /' ,
+  '| APPEND STRLITERAL //' ,
+  '| VAR LIB0'
+'GLOBAL TXTLIB' lib0 libs
+If rc ^= 0 Then Exit rc
+
+Do While args ^= ""
+  Parse Var args file args
+
+  Parse Upper Var file ifn '.' ift '.' .
+  If ift = "" Then ift = "O"
+
+  _of = of
+  If _of = "" Then Parse Var file _of '.' .
+  Parse Upper Var _of ofn '.' oft '.' .
+  If ofn = "" Then ofn = ifn
+  If oft = "" Then oft = "MODULE"
+
+  Address "COMMAND" 'COPYFILE' ifn ift 'A' fn 'TEXT A (REPLACE'
+  If rc ^= 0 Then Exit rc
+  'GLOBAL TXTLIB' lib0 libs
+  Address "COMMAND" 'LOAD' fn '(' map opt1 ;  _rc = rc
+  'GLOBAL TXTLIB' lib0
+  If _rc = 0 Then ,
+  Address "COMMAND" 'GENMOD' fn '(' map opt2 ;  _rc = rc
+  Address "COMMAND" 'ERASE' fn 'TEXT A'
+  Address "COMMAND" 'ERASE' ofn oft 'A'
+  Address "COMMAND" 'RENAME' fn 'MODULE A' ofn oft 'A'
+  If _rc = 0 Then Exit _rc
+
+End
+
+
+

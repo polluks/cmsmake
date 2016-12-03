@@ -1,0 +1,31 @@
+.cm
+.cm
+.cm       Name: WHO HELPCMS
+.cm
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+WHO EXEC
+
+The WHO EXEC mimics the 'who' command found on most POSIX systems.
+Its output is similar to that of 'q names'.
+.cs 1 off
+
+.cs 2 on
+WHO takes no command-line arguments.
++---------+------------------------------------------------------------+
+|   who   |                                                            |
++---------+------------------------------------------------------------+
+.cs 2 off
+
+.cs 5 on
+¢|Example¢%
+
+        Ready;
+        who
+        MAINT    001F
+        ROOT     L0007                         127.0.0.1
+        Ready;
+
+.cs 2 off

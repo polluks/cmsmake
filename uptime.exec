@@ -1,0 +1,54 @@
+/* REXX */
+
+
+make_version = "2.0.27"
+
+
+/* extract current CP date format */
+Parse Value Diag(08,'Q DATEFORMAT') ,
+  With . '=' dateformat . '(' sysdefault ')' . '15'x .
+If sysdefault = "SYSDEFAULT" Then dateformat = "SYSDEFAULT"
+
+/* retrieve IPL time using ISO date format */
+Call Diag 08, 'SET DATEFORMAT ISODATE'
+Parse Value Diag(08,'Q CPLEVEL') ,
+  With . '15'x . '15'x . . ipldate ipltime iplzone . '15'x .
+Call Diag 08, 'SET DATEFORMAT' dateformat
+Parse Var ipltime iplh ':' iplm ':' ipls
+iplsecs = (((iplh * 60) + iplm) * 60) + ipls
+
+/* snatch current date and time */
+nowdate = Date('S',,,'-')
+nowtime = Time()
+Parse Var nowtime nowh ':' nowm ':' nows
+nowsecs = (((nowh * 60) + nowm) * 60) + nows
+
+/* compute the difference */
+days = Date('B',nowdate,'S',,'-') - Date('B',ipldate,'S',,'-')
+secs = nowsecs - iplsecs
+If secs < 0 Then Do
+  days = days - 1
+  secs = secs + 86400
+End
+
+/* normalize hours greater than 24 into days */
+Do While secs > 86400
+  days = days + 1
+  secs = secs - 86400
+End
+diff = secs % 3600 || ":" || (secs // 3600) % 60
+
+/* get count of users currently logged on */
+Parse Value Diag(08,'Q USERS') With users . ',' . '15'x .
+
+/* get system numbers via 'INDICATE LOAD' */
+Parse Upper Value Translate(Diag(08,'IND LOAD'),' ','15'x) ,
+    With . "AVGPROC-" avgproc . "PAGING-" paging .
+Parse Var paging paging "/" .
+
+/* spit it out */
+Say " " || nowtime "up" days "days" diff || "," users "users" || "," ,
+                "average proc:" avgproc || ", paging:" paging || "/sec"
+
+
+

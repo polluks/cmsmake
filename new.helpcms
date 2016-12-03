@@ -1,0 +1,40 @@
+.cm
+.cm
+.cm       Name: NEW HELPCMS
+.cm       Date: 2006, 2007, and following, inspired by earlier work
+.cm             distributed with "CMS Make"
+.cm
+.cm
+.cs 1 on
+NEW EXEC
+
+Put new files or programs or content into place.
+.cs 1 off
+
+.cs 2 on
+Use 'new' to move new versions of a file or program into place.
+
+The purpose of the NEW EXEC is to retain a backup copy of the original
+target file or program rather than simply overwrite it.
+
++---------+------------------------------------------------------------+
+|   new   |   sourcefileid  targetfileid                               |
++---------+------------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+¢|Parameters¢%
+
+  sourcefileid  the new file
+
+  targetfileid  the old file (to be replaced)
+.cs 3 off
+
+.cs 7 on
+See the following related topics:
+
+
+cms copyfile            CMS COPYFILE command for overwriting the old file
+cms file                CMS CREATE FILE command for creating files
+
+.cs 7 off

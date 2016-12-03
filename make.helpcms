@@ -1,0 +1,61 @@
+.cm
+.cm
+.cm       Name: MAKE HELPCMS
+.cm       Date: 2006-Dec-04 (Monday)
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+ CMS Make
+
+ Maintain files based on dependencies
+.cs 1 off
+
+.cs 2 on
+ Use 'make' to maintain, update, or re-create files
+ based on changes or updates to other files they depend on.
+
+ The purpose of CMS Make is to act enough like other 'make' programs
+ that you can use the same rules file(s) on native CMS. (This supports
+ interaction with, but does not require, OpenVM shell and utilities.)
+
+ +----------+----------------------------------------------------------+
+ |   make   |   [-f makefile]  [var=val ...]  target ...               |
+ +----------+----------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+¢|Options¢%
+
+  -f    makefile
+
+  var=val  variable assignment (overrides settings in rules files)
+
+¢|Targets¢%
+
+  A target is something you want made, typicaly a file.
+  For example, the CMS file "MYPROG MODULE" ultimately depends on
+  another CMS file "MYPROG ASSEMBLE". The rules file (the makefile)
+  indicates how they are related and what commands must be issued
+  to bring MYPROG MODULE up to date when MYPROG ASSEMBLE is changed.
+
+  Targets in CMS Make are coded in fn.ft syntax (single token).
+.cs 3 off
+
+.cs 7 on
+See the following web pages:
+
+http://ftp.gnu.org/gnu/make/
+http://www.gnu.org/software/make/manual/make.html
+
+See the following related topics:
+
+
+make overview           Overview of using CMS Make
+make variables          Variables in CMS Make
+oshell make             Help with OpenVM Make (POSIX 'make')
+cms wget                CMS WGET for file transfer
+cms curl                CMS CURL for file transfer
+cms touch               TOUCH to change update time on a file
+
+.cs 7 off

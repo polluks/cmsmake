@@ -1,0 +1,91 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: CMSMKAS EXEC                                          *
+ *        Date: 2006-Nov-27 (Mon)                                     *
+ *              This program is part of the CMS Make package.         *
+ *              This EXEC drives the assembler from POSIX syntax.     *
+ *                                                                    *
+ *                                                                    */
+
+of = "" ; lf = ""
+fn = "#CMSMKAS"
+opts = ""
+list = "NOLIST"
+
+Address "COMMAND" 'STATE HLASM MODULE *'
+If rc = 0 Then asmx = "HLASM"
+          Else asmx = "ASSEMBLE"
+
+/* parse command-line and options */
+Parse Source cms cmd argu . . arg0 .
+Parse Arg args
+Parse Var args arg1 .
+Do While Left(arg1,1) = "-"
+  /* remove this token from the args list */
+  Parse Var args . args
+  /* split this token into left and right at a possible equals sign */
+  Parse Var arg1 arg1l '=' arg1r
+  Select
+    When Abbrev("-o",arg1,2) Then Parse Var args of args
+    When Abbrev("-ac",arg1l,3) /* omit false conditionals */     Then Do
+      list = "LIST" ;  lf = arg1r ;  opts = opts "NOALOGIC" ;      End
+    When Abbrev("-ad",arg1l,3) /* omit debugging directives */   Then Do
+      list = "LIST" ;  lf = arg1r ;                                End
+    When Abbrev("-ah",arg1l,3) /* include high-level source */   Then Do
+      list = "LIST" ;  lf = arg1r ;                                End
+    When Abbrev("-al",arg1l,3) /* include assembly */            Then Do
+      list = "LIST" ;  lf = arg1r ;                                End
+    When Abbrev("-am",arg1l,3) /* include macro expansions */    Then Do
+      list = "LIST" ;  lf = arg1r ;  opts = opts "LIBMAC" ;        End
+    When Abbrev("-an",arg1l,3) /* omit forms processing */       Then Do
+      list = "LIST" ;  lf = arg1r ;                                End
+    When Abbrev("-as",arg1l,3) /* include symbols */             Then Do
+      list = "LIST" ;  lf = arg1r ;                                End
+    When Abbrev("-h",arg1,2) | Abbrev("--help",arg1,6) Then Do
+      'CALLPIPE COMMAND HELP CMS' argu '(NOSCREEN' ,
+        '| NLOCATE 1.10 /DMSHLL355I/ | UNIQ | *.OUTPUT:'
+      Exit rc
+    End /* When .. Do */
+    Otherwise Do
+      Address "COMMAND" 'XMITMSG 3 ARG1 (ERRMSG CALLER URL'
+      Exit 24
+    End /* Otherwise Do */
+  End /* Select */
+  Parse Var args arg1 .
+End /* Do While */
+
+
+Do While args ^= ""
+  Parse Var args file args
+
+  Parse Upper Var file ifn '.' ift '.' .
+  If ift = "" Then ift = "S"
+
+  _lf = lf
+  If _lf = "" Then Parse Var file _lf '.' .
+  Parse Upper Var _lf lfn '.' lft '.' .
+  If lfn = "" Then lfn = ifn
+  If lft = "" Then lft = "L"
+
+  _of = of
+  If _of = "" Then Parse Var file _of '.' .
+  Parse Upper Var _of ofn '.' oft '.' .
+  If ofn = "" Then ofn = ifn
+  If oft = "" Then oft = "O"
+
+  Address "COMMAND" 'ERASE' fn 'ASSEMBLE A'
+  Address "COMMAND" 'COPYFILE' ifn ift 'A' fn 'ASSEMBLE A (OLDDATE RECFM F LRECL 80'
+  If rc ^= 0 Then Exit rc
+  Address "COMMAND" ,
+    'PIPE COMMAND' asmx fn '(' list opts '| STEM RS.' ; _rc = rc
+  If rc ^= 0 Then Address "COMMAND" 'PIPE STEM RS. | CONSOLE'
+  Address "COMMAND" 'ERASE' fn 'ASSEMBLE A'
+  Address "COMMAND" 'ERASE' lfn lft 'A'
+  Address "COMMAND" 'RENAME' fn 'LISTING A' lfn lft 'A'
+  Address "COMMAND" 'ERASE' ofn oft 'A'
+  Address "COMMAND" 'RENAME' fn 'TEXT A' ofn oft 'A'
+  If _rc ^= 0 Then Exit _rc
+
+End
+
+

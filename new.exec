@@ -1,0 +1,120 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: NEW EXEC (REXX command script for VM/CMS)             *
+ *        Date: 2006-Jun-12 (Wednesday)                               *
+ *              distributed with "CMS Make"                           *
+ *                                                                    *
+ *              This is a re-write of an older EXEC                   *
+ *              by the same name that got left behind.                *
+ *                                                                    *
+ *                                                                    */
+
+Numeric Digits 20
+
+Parse Upper Arg fn1 ft1 fm1 fn2 ft2 fm2 . '(' . ')' .
+If fm2 = "" Then Do
+  Address "COMMAND" 'XMITMSG 54 (ERRMSG'
+  Exit 24
+End /* If .. Do */
+
+If fn2 = "=" Then fn2 = fn1
+If ft2 = "=" Then ft2 = ft1
+If fm2 = "=" Then fm2 = fm1
+
+/* stat the source file for size, date, format, and so on */
+'PIPE COMMAND LISTFILE' fn1 ft1 fm1 '(ISODATE NOH' ,
+  '| STEM RS. | VAR LS1'
+If rc ^= 0 Then Do
+  _rc = rc
+  'PIPE STEM RS. | CONSOLE'
+  Exit _rc
+End /* If .. Do */
+
+/* parse file characteristics */
+Parse Var ls1 . . . fmt1 lrecl1 recs1 bk1 dt1 tm1 .
+'PIPE STRLITERAL /' dt1 tm1 '/' ,
+  '| SPEC W 1 1.10 W 2 11.8 | CHANGE /-// | CHANGE /:// | VAR TS1'
+
+/* stat the target file, allowing that it may not exist */
+'PIPE COMMAND LISTFILE' fn2 ft2 fm2 '(ISODATE NOH' ,
+  '| STEM RS. | VAR LS2'
+If rc ^= 0 & rc ^= 28 Then Do
+  _rc = rc
+  'PIPE STEM RS. | CONSOLE'
+  Exit _rc
+End /* If .. Do */
+
+/* parse file characteristics */
+If rc = 28 Then Do
+  fmt2 = "?"
+  lrecl2 = 0
+  recs2 = 0
+  bk2 = 0
+  ts2 = 0
+End /* If .. Do */
+Else Do
+  Parse Var ls2 . . . fmt2 lrecl2 recs2 bk2 dt2 tm2 .
+  'PIPE STRLITERAL /' dt2 tm2 '/' ,
+    '| SPEC W 1 1.10 W 2 11.8 | CHANGE /-// | CHANGE /:// | VAR TS2'
+End /* Else Do */
+
+/* be sure source file is newer than target file */
+If ts2 > ts1 Then Do
+  Say "File" fn1 ft1 fm1 "is older than" fn2 ft2 fm2
+  Exit 28
+End
+
+/* if file attributes match, then compare content */
+If fmt2 = fmt1 & lrecl2 = lrecl1 ,
+    & recs2 = recs1 & bk2 = bk1 Then Do
+
+/*
+  Address "COMMAND" 'STATE XCOMPARE MODULE *'
+  If rc = 0 Then cmpr = "XCOMPARE"
+            Else cmpr = "CMPR"
+  'PIPE COMMAND' cmpr fn1 ft1 fm1 fn2 ft2 fm2 '| STEM RS.'
+  If rc = 0 Then Do
+    Address "COMMAND" 'XMITMSG 41 (ERRMSG LETTER I'
+    Exit 28
+  End
+ */
+
+  'PIPE (END !) <' fn1 ft1 fm1 '| FI: LOOKUP | HOLE' ,
+             '! <' fn2 ft2 fm2 '| FI:        | STEM ANOTB.' ,
+             '!                   FI:        | STEM BNOTA.'
+
+  If anotb.0 = 0 & bnota.0 = 0 Then Do
+    Address "COMMAND" 'XMITMSG 41 (ERRMSG LETTER I'
+    Exit 0
+  End
+
+End
+
+/* find an available "backup filetype" */
+Do i = 0 To 200
+  l = Length(i)
+  ft3 = Strip(Left(ft2,7-l)) || ":" || i
+  Address "COMMAND" 'STATE' fn2 ft3 fm2
+  If rc = 28 Then Leave
+End
+
+/* rename the old file ... carefully */
+fm3 = Left(fm2,1) || "0"
+'PIPE COMMAND RENAME' fn2 ft2 fm2 '=' ft3 fm3 '(NOUPDIRT | STEM RS.'
+If rc ^= 0 & rc ^= 28 Then Do
+  _rc = rc
+  'PIPE STEM RS. | CONSOLE'
+  Exit _rc
+End /* If .. Do */
+
+/* now copy the new file into place */
+'PIPE COMMAND COPYFILE' fn1 ft1 fm1 fn2 ft2 fm2 '(OLDDATE | STEM RS.'
+If rc ^= 0 Then Do
+  _rc = rc
+  'PIPE STEM RS. | CONSOLE'
+  Exit _rc
+End /* If .. Do */
+
+Exit 0
+
+

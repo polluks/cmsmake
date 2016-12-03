@@ -1,0 +1,14 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: WHICH REXX (CMS Pipelines gem)                        *
+ *        Date: 2010-May-20 (Thu)                                     *
+ *              This program is part of the CMS Make package.         *
+ *                                                                    *
+ *                                                                    */
+
+Parse Arg arg1 . '(' opts ')' .
+Parse Source . . . ft . arg0 .
+'pipe' arg0 arg1 ft '(' opts
+Exit rc
+
+

@@ -1,0 +1,47 @@
+.cm
+.cm
+.cm       Name: CMSMKLD HELPCMS
+.cm       Date: 2007-Jan-24 (Wednesday)
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+.cm ¢|CMS CMSMKLD¢%
+
+ Link/load compiled objects into executable programs.
+ Note: CMSMKLD is a minimal wrapper for supporting CMS Make and the
+ Unix-like command syntax typically encountered in 'make' rules files.
+.cs 1 off
+
+.cs 2 on
+ Use 'cmsmkld' to link/load compiled objects from CMS Make.
+
+ The syntax is:
+ +-------------+-------------------------------------------------------+
+ |   cmsmkld   |   [-o outputfile]  [-c]  sourcefile                   |
+ +-------------+-------------------------------------------------------+
+.cs 2 off
+
+.cs 3 on
+¢|Options:¢%
+
+  -o    outputfile
+        specify an output file, overriding defaults
+.cs 3 off
+
+.cs 6 on
+¢|Return Codes:¢%
+
+ Return codes from CMSMKLD are set by the underlying support programs.
+.cs 6 off
+
+.cs 7 on
+See the following related topics:
+
+
+cms load                load and link compiled objects into memory
+cms genmod              create a runnable MODULE from loaded object(s)
+cms cmsmkcc             CMSMKCC for compiling C sourced programs
+cms cmsmkas             CMSMKAS for assembly
+
+.cs 7 off

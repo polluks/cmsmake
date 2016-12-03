@@ -1,0 +1,30 @@
+.cm
+.cm
+.cm       Name: UPTIME HELPCMS
+.cm
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+UPTIME EXEC
+
+The UPTIME EXEC reports system uptime in a format similar to that of
+the 'uptime' command on many POSIX systems (eg: Unix, Linux, CYGWIN).
+.cs 1 off
+
+.cs 2 on
+UPTIME takes no command-line arguments.
++------------+---------------------------------------------------------+
+|   uptime   |                                                         |
++------------+---------------------------------------------------------+
+.cs 2 off
+
+.cs 5 on
+¢|Example¢%
+
+        Ready;
+        uptime
+        20:50:57 up 3 days 7:0 , 19 users
+        Ready;
+
+.cs 2 off

@@ -1,0 +1,30 @@
+.cm
+.cm
+.cm       Name: WHICH HELPCMS
+.cm
+.cm             This file is part of the "CMS Make" package.
+.cm
+.cm
+.cs 1 on
+WHICH EXEC
+
+The WHICH EXEC mimics the 'which' command found on most POSIX systems
+by locating the indicated command as an EXEC or MODULE or Pipelines gem.
+.cs 1 off
+
+.cs 2 on
+WHICH takes one argument, the command verb for which you are searching.
++-----------+----------------------------------------------------------+
+|   which   |   verb                                                   |
++-----------+----------------------------------------------------------+
+.cs 2 off
+
+.cs 5 on
+¢|Example¢%
+
+        Ready;
+        which which
+        WHICH EXEC P MNT319
+        Ready;
+
+.cs 2 off

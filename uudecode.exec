@@ -1,0 +1,13 @@
+/*                                                                    *
+ *                                                                    *
+ *        Name: UUDECODE EXEC                                         *
+ *        Date: 2007-Apr-15 (Sunday)                                  *
+ *              This EXEC is part of the "CMS Make" package.          *
+ *                                                                    *
+ *                                                                    */
+Parse Arg args
+Parse Source . . . . . arg0 .
+'pipe' arg0 args
+Exit rc
+
+

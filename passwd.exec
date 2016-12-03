@@ -1,0 +1,55 @@
+/* REXX */
+
+Address "COMMAND"
+
+Select /* one of DIRM, RACF, VM:Secure */
+
+  When _fstate("RAC EXEC *") Then Do /* using RACF */
+Say "PASSWD: using RACF"
+    'PIPE CONSOLE DARK | VAR NP'
+    If rc ^= 0 Then Exit rc
+    'EXEC RAC ALTUSER' Userid() 'PASSWORD(' || np || ')'
+    If rc ^= 0 Then Exit rc
+  End
+
+  When _fstate("DIRMAINT EXEC *") Then Do /* using DIRMAINT */
+Say "PASSWD: using DIRMAINT"
+Parse Arg user . '(' . ')' .
+If user ^= "" Then user = "FOR" user
+Say "+ DIRMAINT" user "PW"
+   'EXEC DIRMAINT' user 'PW'
+  End
+
+  Otherwise Do
+Say "PASSWD: need support!"
+    rc = 28
+  End
+
+End /* Select */
+
+Exit rc
+
+
+/* --------------------------------------------------------------------
+
+_FSTATE: Procedure
+Parse Upper Arg fn ft fm . , .
+If fn = "" Then fn = "*"
+If ft = "" Then ft = "*"
+If fm = "" Then fm = "A"
+Address "COMMAND" 'STATE' fn ft fm
+Return (rc = 0)
+
+
+/*
+ALU <userid> PASSWORD(<current pw>) NOEXPIRE
+ALU <userid> PASSPHRASE(<phrase>) NOEXPIRE
+ */
+
+
+/*
+ADDUSER <userid> PHRASE(<phrase>) NOPASSWORD
+ALTUSER <userid> NOPASSWORD
+ */
+
+

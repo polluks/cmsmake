@@ -1,0 +1,85 @@
+* Copyright © 2016, Richard M. Troth, all rights reserved.   <plaintext>
+*
+*         Name: CMSMAKE FILELIST
+*         Date: 2006-May-25 (Thu)
+*               This is the package definition for "CMS Make".
+*
+      CMSMAKE  FILELIST *  -- this file
+      CMSMAKE  README   *  -- do what it says, read it
+      CMSMAKE  LICENSE  *  -- simplified legal stuff
+*
+      MAKE     EXEC     *  -- the 'make' command (wraps the pipeline)
+      MAKE     REXX     *  -- 'make' as a CMS Pipelines stage
+      CMSMAKE  CMSMAKE  *  -- simple 'make' rules for making CMS Make
+      _GENERIC CMSMAKE  *  -- rules for everything
+      _DEFAULT CMSMAKE  *  -- rules for when you don't name a makefile
+* make -f cmsmake archives
+*
+      MAKE     HELPCMS  *  -- brief help
+*     OVERVIEW HELPMAKE *  -- missing
+      VARIABLES HELPMAKE *  --
+      CMSMKCC  EXEC     *  -- C compiler wrapper
+      CMSMKCC  HELPCMS  *  -- help for the C compiler wrapper
+      CMSMKAS  EXEC     *  -- assembler wrapper
+      CMSMKAS  HELPCMS  *  -- help for the assembler wrapper
+      CMSMKLD  EXEC     *  -- link/load wrapper
+      CMSMKLD  HELPCMS  *  -- help for the link/load wrapper
+      DMSBR14  S        *  --
+      HELLO    C        *  -- Hello, World!
+      SLEEP    C        *  --
+      UNAME    C        *  --
+      CMSMAKE  H        *  --
+*
+      WGET     EXEC     *  -- the 'wget' command (wraps the pipeline)
+      WGET     REXX     *  -- 'wget' as a CMS Pipelines stage
+      WGET     HELPCMS  *  -- help for the 'wget' workalike
+      CURL     EXEC     *  -- the 'curl' command (wraps the pipeline)
+      CURL     REXX     *  -- 'curl' as a CMS Pipelines stage
+      CURL     HELPCMS  *  -- help fo the 'curl' workalike
+      TOUCH    EXEC     *  -- stamp time/date on a file
+      TOUCH    HELPCMS  *  -- help for 'touch' command
+      RM       EXEC     *  -- Unix equivalent of 'delete'
+      NEW      EXEC     *  --
+      NEW      HELPCMS  *  --
+      UPTIME   EXEC     *  --
+      UPTIME   HELPCMS  *  --
+*
+      UUENCODE EXEC     *  --
+      UUENCODE REXX     *  --
+      UUENCODE HELPCMS  *  --
+      UUDECODE EXEC     *  --
+      UUDECODE REXX     *  --
+      UUDECODE HELPCMS  *  --
+*
+      WHICH    EXEC     *  --
+      WHICH    REXX     *  --
+      WHICH    HELPCMS  *  --
+      WHO      EXEC     *  --
+      WHO      REXX     *  --
+      WHO      HELPCMS  *  --
+*
+* miscellaneous
+*     LOGNAME  REXX     *  -- missing
+*     DATE     EXEC     *  -- missing
+*     DATE     REXX     *  -- missing
+*     TTY      EXEC     *  -- missing
+*     TTY      REXX     *  -- missing
+*
+*     MKDIR    EXEC     *  -- missing
+*
+*     RXDRCNAF C        *  -- missing
+*     RXDRCZVM C        *  -- missing
+*     RXDRCBVM C        *  -- missing
+*     RXDIAGRC C        *  -- missing
+*     RXDIAGRC H        *  -- missing
+*     RXDIAGRC CMSMAKE  *  -- missing
+*
+*     LS       EXEC     *  -- missing
+*     CAT      EXEC     *  -- missing
+*     CAT      REXX     *  -- missing
+*     HCP      EXEC     *  -- missing
+      PASSWD   EXEC     *  --
+*
+*     GETMSGS  EXEC     *  -- missing
+*
+*

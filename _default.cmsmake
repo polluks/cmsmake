@@ -1,0 +1,40 @@
+#
+#
+#         Name: _DEFAULT CMSMAKE
+#         Date: 2006, 2007, and following
+#               This file is part of the CMS Make package.
+#
+#
+
+
+anytarget:  profile.xedit  somedep  profile.exec
+        @echo "making 'anytarget'"
+        @hcp q userid
+
+somedep:
+        @echo "making 'somedep'"
+        @cms ' q disk '
+
+cmsmake.vmarc:  cmsmake.filelist _default.cmsmake
+        @cms ' pipe < cmsmake filelist \
+                | nlocate 1.1 /*/ \
+                | spec /vmarc pack/ nw w 1 nw w 2 nw /a/ nw \
+                    /cmsmake vmarc a ( append/ nw \
+                | cms | console '
+
+setup:
+        cms ' defaults set peek from 1 for * '
+        cms ' defaults set sendfile nolog '
+        cms ' defaults set receive nolog '
+
+help:
+        @echo ""
+        @echo "$(MAKE): Welcome to CMS Make!"
+        @echo ""
+
+
+
+
+
+
+
