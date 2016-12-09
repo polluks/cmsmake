@@ -37,10 +37,12 @@ Exit rc * (rc ^= 12)
  */
 _hostname: Procedure
 Parse Arg h . , .
+If h = "" Then Return h
 var = "$" || h
 
 /* if this host is already known then return it as-is */
 val = Value(var,,"SESSION NSLOOKUP")
+If val = "VAL" Then val = ""
 If val ^= "" Then Return val
 
 /* if the remote address is IPv6 then skip the lookup */
@@ -52,6 +54,8 @@ End
 
 /* try the lookup */
 Address "COMMAND" 'PIPE VAR H | HOSTBYADDR | VAR VAL'
+If rc ^= 0 Then val = ""
+If val = "VAL" Then val = ""
 
 /* wrap failing address in parenthesis */
 If rc ^= 0 Then Do
