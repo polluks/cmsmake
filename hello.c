@@ -7,9 +7,10 @@
  *                                                                    *
  *                                                                    */
 
-#include "cmsmake.h"
-
 #include <sys/utsname.h>
+#include <stdio.h>
+
+#include "cmsmake.h"
 
 int main()
   {
@@ -23,14 +24,12 @@ int main()
 
     (void) printf("CMS Make version %s\n",MAKE_VERSION);
 
-    (void) printf("OS=%s, R=%s, V=%s, HW=%s\n",
-        hellouts.sysname, hellouts.release,
-        hellouts.version, hellouts.machine);
+    (void) printf("OS=%s, REL=%s, HW=%s\n",
+        hellouts.sysname, hellouts.release,hellouts.machine);
+    (void) printf("VER='%s'\n",hellouts.version);
     /*  hellouts.nodename  */
 
-    (void) exit(0);
     return 0;
   }
-
 
 

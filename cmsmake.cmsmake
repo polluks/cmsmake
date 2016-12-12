@@ -54,7 +54,7 @@ MANIFEST        =       cmsmake.cmsmake   \
                         cmsmake.filelist
 
 BASEURL         =       http://www.casita.net/pub/cmsmake
-PROJECTURL      =       http://cmsmake.googlecode.com/files
+PROJECTURL      =       https://github.com/trothr/cmsmake
 
 
 _default:  $(MANIFEST)

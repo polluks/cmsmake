@@ -6,7 +6,7 @@
  *                                                                    *
  *                                                                    */
 
-make_version = "2.0.31"
+make_version = "2.0.33"
 Numeric Digits 16
 
 /* if no other output, attach console */
@@ -78,6 +78,9 @@ var.MAKECMDGOALS = args
 var.MAKEFILE = tolower(mfn||"."||mft)
 var.MAKEFILES = var.MAKEFILE
 var.MAKEFILE_LIST = var.MAKEFILE
+/* .MAKE -- is set in _GENERIC CMSMAKE */
+/* .MAKE_COMMAND -- would follow var.MAKE */
+/* .MAKEFLAGS= -- is not set */
 
 /* set hosttype from CMS level to indicate architecture */
 'CALLPIPE COMMAND Q CMSLEVEL | SPEC W 1 NW' ,
