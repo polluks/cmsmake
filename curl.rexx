@@ -7,7 +7,7 @@
 
 Numeric Digits 20
 
-make_version = "2.0.30"
+make_version = "2.0.34"
 
 /* if no other output, attach console */
 'STREAMSTATE OUTPUT'
@@ -91,7 +91,6 @@ Do While args ^= ""
   If POS(':',user) > 0 Then Parse Var user user ':' pass
   Upper mode
   file = "/" || file
-  If port = "" Then port = 80
   If verbose Then Do
     Say "PROTOCOL" mode
     Say "USERNAME" user
@@ -106,7 +105,7 @@ Do While args ^= ""
     When mode = "HTTP" Then Parse Value ,
       url_http(user,pass,host,port,file,outfile,trans) With rc rs
     When mode = "FTP" Then Parse Value ,
-      viarover(furl,outfile,trans) With rc rs
+      url_ftp(user,pass,host,port,file,outfile,trans) With rc rs
     Otherwise Do
 /*    Address "COMMAND" 'XMITMSG 15 MODE (ERRMSG CALLER URL'          */
       Address "COMMAND" 'XMITMSG 475 MODE (ERRMSG CALLER URL'
@@ -140,6 +139,8 @@ If Verify(host,"0123456789.") > 0 Then Do
   If rc ^= 0 Then Return rc
 End /* If .. Do */
 Else addr = host
+
+If port = "" Then port = 80
 
 If outfile = "" Then outfile = basename(file)
 
@@ -230,6 +231,66 @@ If fn ^= "-" & lm ^= "" Then lm = _lm2full(lm)
 If fn ^= "-" & lm ^= "" Then Address "COMMAND" 'DMSPLU' fn ft 'A' lm
 
 Return _rc
+
+
+/* ------------------------------------------------------------- URL_FTP
+ */
+url_ftp: Procedure Expose tcp. ;  a2e = tcp.2 ;  e2a = tcp.3
+Parse Arg user,pass,host,port,file,outfile,trans,.
+Parse Var file file ";" .   /* might look for ";type=A" to mean ASCII */
+
+If Verify(host,"0123456789.") > 0 Then Do
+  /* 'CALLPIPE VAR HOST | HOSTBYNAME | VAR ADDR' */
+  /* a fix from phsiii */
+  'CALLPIPE VAR HOST | HOSTBYNAME | SPECS w1 1 | VAR ADDR'
+  If rc ^= 0 Then Return rc
+End /* If .. Do */
+Else addr = host
+
+If outfile = "" Then outfile = basename(file)
+
+/* determine output to file or stream */
+Parse Upper Var outfile fn '.' ft '.' .
+If fn = "" Then fn = Userid()
+If ft = "" & trans Then ft = "TXT"
+If ft = "" Then ft = "BIN"
+If fn = "-" Then pipe = "*.OUTPUT:"
+            Else pipe = ""
+
+/* build a standard FTP request */
+If user = "" Then user = "anonymous"
+If pass = "" Then pass = Userid()
+If port = "" Then port = 21
+If outfile = "" Then outfile = file
+
+temp = "temp.file"
+
+Address "COMMAND" 'MAKEBUF'
+
+  Queue user pass
+  If trans Then Queue "TYPE A"
+           Else Queue "TYPE I"
+  Queue "GET" file temp "(REPLACE"
+  Queue "QUIT"
+
+  Address "CMS" 'FTP' host port
+  ftprc = rc
+
+Address "COMMAND" 'DROPBUF'
+
+If ftprc ^= 0 Then Return ftprc
+
+/* pipeline fixup here */
+Parse Upper Var temp tfn '.' tft '.' .
+If pipe = "" Then Do
+  Address "CMS" 'RENAME' tfn tft "A" fn ft "="
+End ;        Else Do
+  'CALLPIPE <' tfn tft '|' pipe
+  ftprc = rc
+  Address "COMMAND" 'ERASE' tfn tft "A"
+End
+
+Return ftprc
 
 
 /* ------------------------------------------------------------ VIAROVER
