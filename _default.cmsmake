@@ -27,6 +27,9 @@ setup:
         cms ' defaults set sendfile nolog '
         cms ' defaults set receive nolog '
 
+archives:
+        $(MAKE) -f $(LOGNAME).cmsmake archives
+
 help:
         @echo ""
         @echo "$(MAKE): Welcome to CMS Make!"

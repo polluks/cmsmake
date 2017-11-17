@@ -6,7 +6,7 @@
  *                                                                    *
  *                                                                    */
 
-make_version = "2.0.34"
+make_version = "2.0.35"
 Numeric Digits 16
 
 /* if no other output, attach console */
@@ -227,6 +227,14 @@ Do While s ^= ""
   Parse Var s s1 '15'x s
   s1 = Strip(s1) ;  mute = 0 ;  okay = 0 ;  skip = 0
   Do Forever ; Select
+    When Left(s1,2) = "-@" Then Do
+      okay = 1 ; mute = 1
+      s1 = Substr(s1,3)
+    End
+    When Left(s1,2) = "@-" Then Do
+      mute = 1 ; okay = 1
+      s1 = Substr(s1,3)
+    End
     When Left(s1,1) = "@" Then Do
       mute = 1
       s1 = Substr(s1,2)
