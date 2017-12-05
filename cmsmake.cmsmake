@@ -376,11 +376,17 @@ sleep.c:
 sleep.o:  sleep.c
         $(CC) -c -o $@ $<
 
+sleep.module:   sleep.o
+        $(LD) -lsceelked -o $@ $<
+
 uname.c:
         wget -q $(BASEURL)/$@
 
 uname.o:  uname.c
         $(CC) -c -o $@ $<
+
+uname.module:   uname.o
+        $(LD) -lsceelked -o $@ $<
 
 
 trackv52.vmarc:

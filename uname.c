@@ -7,21 +7,26 @@
  *                                                                    *
  *                                                                    */
 
+#include <sys/utsname.h>
+#include <unistd.h>
+
 #include "cmsmake.h"
 
-#include <unistd.h>
-#include <sys/utsname.h>
-
+/*
 #define  do_sysname  0x0001
 #define  do_nodename  0x0002
 #define  do_release  0x0004
 #define  do_version  0x0008
 #define  do_machine  0x0010
-       -s, --kernel-name
-       -n, --nodename
-       -r, --kernel-release
-       -v, --kernel-version
-       -m, --machine
+#define  do_domain   0x0020
+       -s, --kernel-name        == sysname
+       -n, --nodename           == nodename
+       -r, --kernel-release     == release
+       -v, --kernel-version     == version
+       -m, --machine            == machine
+           --domainname (maybe)
+       --version                == CMS Make version
+ */
 
 int main()
   {
@@ -34,37 +39,27 @@ int main()
     rc = uname(&hellouts);
     if (rc != 0) { (void) perror("uname()"); (void) exit(rc); return rc; }
 
-    (void) printf("OS=%s, R=%s, V=%s, HW=%s\n",
-        hellouts.sysname, hellouts.release,
-        hellouts.version, hellouts.machine);
-    /*  hellouts.nodename  */
+    (void) printf("S=%s, N=%s, R=%s, V=%s, M=%s\n",
+        hellouts.sysname,
+        hellouts.nodename,
+        hellouts.release,
+        hellouts.version,
+        hellouts.machine
+        );
 
-    (void) exit(0);
+/*  (void) exit(0);  */
     return 0;
   }
 
 
-
-
+/*
 
        -a, --all = except omit -p and -i
-
-       -s, --kernel-name
-       -n, --nodename
-       -r, --kernel-release
-       -v, --kernel-version
-       -m, --machine
-
        -p, --processor
        -i, --hardware-platform
-
        -o, --operating-system
-
        --help
 
-       --version
-
-
-
+ */
 
 

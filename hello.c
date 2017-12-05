@@ -24,10 +24,16 @@ int main()
 
     (void) printf("CMS Make version %s\n",MAKE_VERSION);
 
-    (void) printf("OS=%s, REL=%s, HW=%s\n",
-        hellouts.sysname, hellouts.release,hellouts.machine);
-    (void) printf("VER='%s'\n",hellouts.version);
-    /*  hellouts.nodename  */
+/*
+    rc = uname(&hellouts);
+    if (rc != 0) { (void) perror("uname()"); (void) exit(rc); return rc; }
+ */
+
+    (void) printf("         sysname %s\n",hellouts.sysname);
+    (void) printf("        nodename %s\n",hellouts.nodename);
+    (void) printf("      OS release %s\n",hellouts.release);
+    (void) printf("      OS version %s\n",hellouts.version);
+    (void) printf("         machine %s\n",hellouts.machine);
 
     return 0;
   }

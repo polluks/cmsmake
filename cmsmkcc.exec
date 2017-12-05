@@ -12,8 +12,8 @@ opts = ""
 list = "NOLIST"
 link = 1
 defs = ""
-defs = "OPENVM=1"
-opts = "LONGNAME"
+/* defs = "OPENVM=1" */
+/* opts = "LONGNAME" */
 verbose = 0
 
 /* parse command-line and options */
