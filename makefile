@@ -1,0 +1,404 @@
+#
+#
+#         Name: CMSMAKE CMSMAKE (package rules file for CMS Make)
+#         Date: 2006, 2007, and following
+#               These rules let you re-package CMS Make or even
+#               re-download it from the primary web site (BASEURL).
+#               This file is part of the CMS Make package
+#               but parts require VMARC and CMS TAR for operation.
+#
+
+
+MANIFEST        =       cmsmake.cmsmake   \
+	                make.exec         \
+	                make.rexx         \
+	                _generic.cmsmake  \
+	                _default.cmsmake  \
+	                make.helpcms      \
+	                cmsmkcc.exec      \
+	                cmsmkcc.helpcms   \
+	                cmsmkas.exec      \
+	                cmsmkas.helpcms   \
+	                cmsmkld.exec      \
+	                cmsmkld.helpcms   \
+	                dmsbr14.s         \
+	                hello.c           \
+	                sleep.c           \
+	                uname.c           \
+	                wget.exec         \
+	                wget.rexx         \
+	                wget.helpcms      \
+	                curl.exec         \
+	                curl.rexx         \
+	                curl.helpcms      \
+	                touch.exec        \
+	                touch.helpcms     \
+	                rm.exec           \
+	                new.exec          \
+	                new.helpcms       \
+	                uptime.exec       \
+	                uptime.helpcms    \
+	                uuencode.exec     \
+	                uuencode.rexx     \
+	                uuencode.helpcms  \
+	                uudecode.exec     \
+	                uudecode.rexx     \
+	                uudecode.helpcms  \
+	                which.exec        \
+	                which.rexx        \
+	                which.helpcms     \
+	                who.exec          \
+	                who.rexx          \
+	                who.helpcms       \
+	                cmsmake.h         \
+	                cmsmake.filelist
+
+BASEURL         =       http://www.casita.net/pub/cmsmake
+PROJECTURL      =       https://github.com/trothr/cmsmake
+
+
+_default:  $(MANIFEST)
+
+%.txt:
+	wget $(PROJECTURL)/$@
+
+# create a Unix makefile (with tabs) from the CMS Make makefile
+makefile:  cmsmake.cmsmake
+	-@mv makefile makefile.bak
+	@cat cmsmake.cmsmake \
+	  | sed 's#^        #\t#' > makefile
+
+### source files ###
+cmsmake.filelist:
+	wget -q $(BASEURL)/$@
+
+cmsmake.cmsmake:
+	wget -q $(BASEURL)/$@
+
+make.exec:
+	wget -q $(BASEURL)/$@
+
+make.rexx:
+	wget -q $(BASEURL)/$@
+
+_generic.cmsmake:
+	wget -q $(BASEURL)/$@
+
+_default.cmsmake:
+	wget -q $(BASEURL)/$@
+
+make.helpcms:
+	wget -q $(BASEURL)/$@
+
+variables.helpcms:
+	wget -q $(BASEURL)/$@
+
+cmsmkcc.exec:
+	wget -q $(BASEURL)/$@
+
+cmsmkcc.helpcms:
+	wget -q $(BASEURL)/$@
+
+cmsmkas.exec:
+	wget -q $(BASEURL)/$@
+
+cmsmkas.helpcms:
+	wget -q $(BASEURL)/$@
+
+cmsmkld.exec:
+	wget -q $(BASEURL)/$@
+
+cmsmkld.helpcms:
+	wget -q $(BASEURL)/$@
+
+wget.exec:
+	wget -q $(BASEURL)/$@
+
+wget.rexx:
+	wget -q $(BASEURL)/$@
+
+wget.helpcms:
+	wget -q $(BASEURL)/$@
+
+curl.exec:
+	wget -q $(BASEURL)/$@
+
+curl.rexx:
+	wget -q $(BASEURL)/$@
+
+curl.helpcms:
+	wget -q $(BASEURL)/$@
+
+touch.exec:
+	wget -q $(BASEURL)/$@
+
+touch.helpcms:
+	wget -q $(BASEURL)/$@
+
+rm.exec:
+	wget -q $(BASEURL)/$@
+
+new.exec:
+	wget -q $(BASEURL)/$@
+
+new.helpcms:
+	wget -q $(BASEURL)/$@
+
+uptime.exec:
+	wget -q $(BASEURL)/$@
+
+uptime.helpcms:
+	wget -q $(BASEURL)/$@
+
+uuencode.exec:
+	wget -q $(BASEURL)/$@
+
+uuencode.rexx:
+	wget -q $(BASEURL)/$@
+
+uuencode.helpcms:
+	wget -q $(BASEURL)/$@
+
+uudecode.exec:
+	wget -q $(BASEURL)/$@
+
+uudecode.rexx:
+	wget -q $(BASEURL)/$@
+
+uudecode.helpcms:
+	wget -q $(BASEURL)/$@
+
+which.exec:
+	wget -q $(BASEURL)/$@
+
+which.rexx:
+	wget -q $(BASEURL)/$@
+
+which.helpcms:
+	wget -q $(BASEURL)/$@
+
+who.exec:
+	wget -q $(BASEURL)/$@
+
+who.rexx:
+	wget -q $(BASEURL)/$@
+
+who.helpcms:
+	wget -q $(BASEURL)/$@
+
+cmsmake.h:
+	wget -q $(BASEURL)/$@
+
+
+#
+# some way of stuffing common info into all REXX sources
+cmsmkver.sed:  cmsmake.h cmsmkver-$(HOSTTYPE)
+	@test -f $@
+
+cmsmkver-i386:
+	@grep MAKE_VERSION cmsmake.h | awk '{ \
+	  print "s/make_version = ~.*~/make_version = " $$3 "/g" ; \
+	  print "s/var.MAKE_VERSION = ~.*~/var.MAKE_VERSION = " $$3 "/g" ; \
+	    }' \
+	  | sed 's#~#"#g' \
+	  > cmsmkver.sed
+	@sed -f cmsmkver.sed -i \
+	  curl.rexx wget.rexx make.rexx rm.exec touch.exec
+
+cmsmkver-CMS:
+
+
+### package files ###
+
+archives:  cmsmake.vmarc  cmsmake.tar
+
+cmsmake.vmarc:  cmsmake.filelist $(MANIFEST)
+	@rm -f cmsmake.vmarc
+	@cms ' pipe < cmsmake filelist \
+	        | nlocate 1.1 /*/ \
+	        | spec /vmarc pack/ nw w 1 nw w 2 nw /a/ nw \
+	            /cmsmake vmarc a ( append/ nw \
+	        | cms | console '
+
+cmsmake.vmarcuue:  cmsmake.vmarc
+	uuencode -m $< < $< > $@
+
+cmsmake.tar:  cmsmake.filelist $(MANIFEST)
+	@rm -f cmsmake.tar
+#       @cat < cmsmake.filelist \
+#               | grep -v '^*' \
+#               | awk '{print $$1 "." $$2}' \
+#               | tr A-Z a-z \
+#               | xargs tar cf cmsmake.tar
+	tar cvf cmsmake.tar (include cmsmake
+
+cmsmake.taruue:  cmsmake.tar
+	uuencode -m $< < $< > $@
+
+
+### sample builds ###
+
+dmsbr14.s:
+	wget -q $(BASEURL)/$@
+
+dmsbr14.o:  dmsbr14.s
+	$(AS) -o dmsbr14.o dmsbr14.s
+
+dmsbr14.module:  dmsbr14.o
+	$(LD) -o dmsbr14.module dmsbr14.o
+
+hello.c:
+	wget -q $(BASEURL)/$@
+
+hello.s:        hello.c
+	$(CC) -o hello.s -S hello.c
+
+hello.o:        hello.c
+	$(CC) -o hello.o -c hello.c
+
+#hello.o:        hello.s
+#        $(AS) -o hello.o hello.s
+
+hello:          hello.o
+	$(LD) \
+	        -L/usr/lib/gcc-lib/i586-suse-linux/3.3.3 \
+	        -lgcc \
+	        -lc \
+	        -emain \
+	        -dynamic-linker /lib/ld-linux.so.2 \
+	        -o $@ $<
+
+hello.module:   hello.o
+	$(LD) -lsceelked -o $@ $<
+
+
+#
+gnumakevars.txt:
+	@echo "$(.VARIABLES)" | sed 's# #\n#g' | sort > gnumakevars.txt
+
+
+
+webrover.vmarc:
+	wget -q http://vm.marist.edu/track/$@
+
+wget.vma:
+	wget -q http://www.rvdheij.nl/download/wget.vma
+
+#               http://vm.marist.edu/~pipeline
+
+#               http://zvm.sru.edy/~download
+
+#               http://cmsuvmb.cmsu.edu/charlott/
+
+#               http://www.vm.ibm.com/download/packages/descript.cgi?FIXDATE
+
+
+
+# a handy target for cleaning up
+#clean:  clean-$(MACHTYPE)
+#clean:  clean-$(HOSTTYPE)
+clean:  clean-$(OSTYPE)
+	@rm -f cmsmake.vmarc cmsmake.tar cmsmkver.sed
+	@rm -f dmsbr14.o dmsbr14.module dmsbr14
+	@rm -f hello.o hello.s hello.module hello hello.exe
+	@rm -f sleep.o sleep.s sleep.module sleep sleep.exe
+	@rm -f uname.o uname.s uname.module uname uname.exe
+
+clean-CMS:
+
+clean-i386:
+	@find . -print | grep ';' | xargs -r rm
+
+clean-linux:
+	@find . -print | grep ';' | xargs -r rm
+
+distclean:  clean
+
+veryclean:  clean
+
+#
+# quick help for this rules file
+help:
+	@echo ""
+	@echo "$(MAKE): This is the build logic for CMS Make."
+	@echo "$(MAKE): Try 'make -f $(MAKEFILE_LIST) cmsmake.vmarc'."
+	@echo ""
+
+varcheck:       $(MANIFEST)
+#        @echo "$(.VARIABLES)"
+#       @echo "CC=$(CC)"
+#       @echo "AS=$(AS)"
+#       @echo "LD=$(LD)"
+#       @echo "AR=$(AR)"
+	@echo "HOSTNAME=$(HOSTNAME)"
+	@echo "HOSTTYPE=$(HOSTTYPE)"
+	@echo "MACHTYPE=$(MACHTYPE)"
+	@echo "OSTYPE=$(OSTYPE)"
+	@echo "MAKE=$(MAKE)"
+	@echo "MAKECMDGOALS=$(MAKECMDGOALS)"
+	@echo "MAKEFILE_LIST=$(MAKEFILE_LIST)"
+	@echo "MAKEFILES=$(MAKEFILES)"
+	@echo "MAKELEVEL=$(MAKELEVEL)"
+	@echo "MAKE_VERSION=$(MAKE_VERSION)"
+	@echo "SUFFIXES=$(SUFFIXES)"
+	@echo "@=$@ ($(@)) *=$* <=$< +=$+"
+	@echo ".LIBPATTERNS=$(.LIBPATTERNS)"
+	@echo "CPP=$(CPP)"
+	@echo "CPU=$(CPU)"
+	@echo "CXX=$(CXX)"
+
+curl-and-wget:
+	new -k curl.rexx wget.rexx
+	new -k curl.exec wget.exec
+	new -k wget.rexx curl.rexx
+	new -k wget.exec curl.exec
+
+wget-and-curl:
+	new -k curl.rexx wget.rexx
+	new -k curl.exec wget.exec
+	new -k wget.rexx curl.rexx
+	new -k wget.exec curl.exec
+
+#
+# these EXECs are really all the same program ... for now
+various:
+	new -k make.exec curl.exec
+	new -k curl.exec wget.exec
+	new -k wget.exec make.exec
+
+ovmcheck:
+#        @sh -c ' set '
+	@sh -c ' uname -a '
+
+sleep.c:
+	wget -q $(BASEURL)/$@
+
+sleep.o:  sleep.c
+	$(CC) -c -o $@ $<
+
+sleep.module:   sleep.o
+	$(LD) -lsceelked -o $@ $<
+
+uname.c:
+	wget -q $(BASEURL)/$@
+
+uname.o:  uname.c
+	$(CC) -c -o $@ $<
+
+uname.module:   uname.o
+	$(LD) -lsceelked -o $@ $<
+
+
+trackv52.vmarc:
+	curl --binary -s http://vm.marist.edu/track/$@ \
+	  | FBLOCK 80 00 | > trackv52 VMARC a F 80
+
+
+#
+# possible single-token file ID syntax: fn.ft, //fn.ft.fm
+# but I really don't like: fn.ft.fm
+#
+
+# which, df, du, changes to 'new'
+
+
