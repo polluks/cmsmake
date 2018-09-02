@@ -4,8 +4,8 @@ This is CMS Make, a `make` workalike for VM/CMS systems.
 
 This is not the first `make` for VM/CMS.
 It is at least the second by one author, and there are others.
-This `make` is intended to support the syntax used by `make` on other platforms.
-With care, rules files for CMS Make can be used with any `make`.
+This `make` is intended to support the syntax used by `make` on other
+platforms. With care, rules files for CMS Make can be used with any `make`.
 
 ## cmsmake
 
