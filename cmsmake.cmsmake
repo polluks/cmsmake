@@ -393,6 +393,9 @@ trackv52.vmarc:
         curl --binary -s http://vm.marist.edu/track/$@ \
           | FBLOCK 80 00 | > trackv52 VMARC a F 80
 
+trackmod.vmarc:
+        curl --binary -s http://vmtrack.velocitysoftware.com/$@ \
+          | FBLOCK 80 00 | > trackmod VMARC a F 80
 
 #
 # possible single-token file ID syntax: fn.ft, //fn.ft.fm
