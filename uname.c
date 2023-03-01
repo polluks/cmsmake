@@ -9,6 +9,7 @@
 
 #include <sys/utsname.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "cmsmake.h"
 
@@ -32,19 +33,19 @@ int main()
   {
     static  char  *_eye_catcher = "CMS Make - uname.c";
     int  rc;
-    struct  utsname  hellouts;
+    struct  utsname  unameuts;
 
     (void) printf("CMS Make version %s\n",MAKE_VERSION);
 
-    rc = uname(&hellouts);
-    if (rc != 0) { (void) perror("uname()"); (void) exit(rc); return rc; }
+    rc = uname(&unameuts);
+    if (rc != 0) { (void) perror("uname()"); return rc; }
 
     (void) printf("S=%s, N=%s, R=%s, V=%s, M=%s\n",
-        hellouts.sysname,
-        hellouts.nodename,
-        hellouts.release,
-        hellouts.version,
-        hellouts.machine
+        unameuts.sysname,
+        unameuts.nodename,
+        unameuts.release,
+        unameuts.version,
+        unameuts.machine
         );
 
 /*  (void) exit(0);  */

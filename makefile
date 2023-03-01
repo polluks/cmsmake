@@ -256,21 +256,24 @@ hello.s:        hello.c
 hello.o:        hello.c
 	$(CC) -o hello.o -c hello.c
 
-#hello.o:        hello.s
-#        $(AS) -o hello.o hello.s
+#hello.o:       hello.s
+#       $(AS) -o hello.o hello.s
 
-hello:          hello.o
-	$(LD) \
-	        -L/usr/lib/gcc-lib/i586-suse-linux/3.3.3 \
-	        -lgcc \
-	        -lc \
-	        -emain \
-	        -dynamic-linker /lib/ld-linux.so.2 \
-	        -o $@ $<
+#hello:         hello.o
+#       $(LD) \
+#               -L/usr/lib/gcc-lib/i586-suse-linux/3.3.3 \
+#               -lgcc \
+#               -lc \
+#               -emain \
+#               -dynamic-linker /lib/ld-linux.so.2 \
+#               -o $@ $<
 
 hello.module:   hello.o
 	$(LD) -lsceelked -o $@ $<
 
+hello:          hello.c makefile
+#       $(CC) -o hello hello.c
+	$(CC) -o $@ $<
 
 #
 gnumakevars.txt:
@@ -379,6 +382,10 @@ sleep.o:  sleep.c
 sleep.module:   sleep.o
 	$(LD) -lsceelked -o $@ $<
 
+sleep:          sleep.c makefile
+#       $(CC) -o sleep sleep.c
+	$(CC) -o $@ $<
+
 uname.c:
 	wget -q $(BASEURL)/$@
 
@@ -388,11 +395,17 @@ uname.o:  uname.c
 uname.module:   uname.o
 	$(LD) -lsceelked -o $@ $<
 
+uname:          uname.c makefile
+#       $(CC) -o uname uname.c
+	$(CC) -o $@ $<
 
 trackv52.vmarc:
 	curl --binary -s http://vm.marist.edu/track/$@ \
 	  | FBLOCK 80 00 | > trackv52 VMARC a F 80
 
+trackmod.vmarc:
+	curl --binary -s http://vmtrack.velocitysoftware.com/$@ \
+	  | FBLOCK 80 00 | > trackmod VMARC a F 80
 
 #
 # possible single-token file ID syntax: fn.ft, //fn.ft.fm

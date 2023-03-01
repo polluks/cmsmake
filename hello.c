@@ -18,16 +18,14 @@ int main()
     int  rc;
     struct  utsname  hellouts;
 
-    rc = uname(&hellouts);
+//  rc = uname(&hellouts);
 
     (void) printf("Hello, World!\n");
 
     (void) printf("CMS Make version %s\n",MAKE_VERSION);
 
-/*
     rc = uname(&hellouts);
-    if (rc != 0) { (void) perror("uname()"); (void) exit(rc); return rc; }
- */
+    if (rc != 0) { (void) perror("uname()"); return rc; }
 
     (void) printf("         sysname %s\n",hellouts.sysname);
     (void) printf("        nodename %s\n",hellouts.nodename);
