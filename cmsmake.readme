@@ -1,14 +1,14 @@
-Copyright © 2006, 2016, Richard M. Troth, all rights reserved. <plaintext>                                                                                                                                                                                     
+Copyright © 2006, 2016, 2024, Richard M. Troth, all rights reserved. <plaintext>                                                                                                                                                                               
 
  CMS Make
  A 'make' workalike for VM/CMS systems
 
-        http://code.google.com/p/cmsmake/
+        http://www.casita.net/pub/cmsmake/
 
  CMS Make provides similar function on CMS systems
  as traditional 'make' provides on POSIX systems.
  Rules files are visually compatible with standard makefiles,
- except that the Tab character is ordinary white space.
+ except that the Tab character is ordinary white space in CMS Make.
 
  This is a really really simple implementation.
  The purpose is to allow a subset of 'make' functionality
@@ -23,6 +23,6 @@ Copyright © 2006, 2016, Richard M. Troth, all rights reserved. <plaintext>      
 
  If you have questions about this package, send e-mail to:
 
-      Rick Troth <rmt@casita.net>
+      Rick Troth <rick@trothtech.us>
 
 

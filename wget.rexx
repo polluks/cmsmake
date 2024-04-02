@@ -7,7 +7,7 @@
 
 Numeric Digits 20
 
-make_version = "2.0.35"
+make_version = "2.0.36"
 
 /* if no other output, attach console */
 'STREAMSTATE OUTPUT'

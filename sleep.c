@@ -4,7 +4,6 @@
  *        Date: 2007 and following                                    *
  *              This program is part of the CMS Make package.         *
  *                                                                    *
- *                                                                    *
  *                                                                    */
 
 #include "cmsmake.h"

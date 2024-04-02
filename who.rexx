@@ -3,9 +3,10 @@
  *        Date: 2006-Dec-05 (Tuesday)
  *              2010-May-20 (Thu)                                     *
  *              This program is part of the CMS Make package.         *
+ *              2024-03-26 (Tue)                                      *
  */
 
-make_version = "2.0.34"
+make_version = "2.0.36"
 
 /* if no other output, attach console */
 'STREAMSTATE OUTPUT'
@@ -24,14 +25,14 @@ Do Forever
   If rc ^= 0 Then Leave
   Parse Var record +0 user +8 "-" term . . "FROM" from
   from = _hostname(from)
-  'OUTPUT' user term Copies(" ",22) from
+  name = _realname(user)
+  'OUTPUT' user term name from
   If rc ^= 0 Then Leave
   'READTO'
   If rc ^= 0 Then Leave
 End /* Do Forever */
 
 Exit rc * (rc ^= 12)
-
 
 /* ---------------------------------------------------------------------
  */
@@ -72,8 +73,17 @@ Call Value var, val, "SESSION NSLOOKUP"
 
 Return val
 
+/* ---------------------------------------------------------------------
+ */
+_realname: Procedure
+Parse Arg u . , .
+If u = "" Then Return Copies(" ",22)
+n = "some user"
+Address "COMMAND" 'PIPE CMS NAMEFIND :userid' u ':name | VAR N'
 
 
-
+l = Length(n)
+If l < 22 Then n = n || Copies(" ",22-l)
+               Return n
 
 

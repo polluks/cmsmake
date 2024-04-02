@@ -7,11 +7,12 @@
 *      Updated: late 2008 or early 2009
 *                                                                     *
 *                                                                     *
-         LA    15,0
-         BR    14
+*lllllll iiiii parm,parm,parm,...      comment
+         LA    15,0                    set return code zero
+         BR    14                      go back to the caller
 *                                                                     *
          DC    C'     '
-         DC    C'CMS Make - dmsbr14.s'
+         DC    C'CMS Make - dmsbr14.s'  human readable eye-catcher
          DC    C'     '
 *                                                                     *
-         END   ,
+         END   ,                       must be the last statement

@@ -4,12 +4,12 @@
  *        Date: 2010-May-13 (Thursday, last T320 meeting for JMT)     *
  *              This program is part of the CMS Make package.         *
  *                                                                    *
- *                                                                    *
  *                                                                    */
 
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cmsmake.h"
 
@@ -33,34 +33,31 @@ int main()
   {
     static  char  *_eye_catcher = "CMS Make - uname.c";
     int  rc;
-    struct  utsname  unameuts;
+    struct  utsname  hellouts;
 
     (void) printf("CMS Make version %s\n",MAKE_VERSION);
 
-    rc = uname(&unameuts);
-    if (rc != 0) { (void) perror("uname()"); return rc; }
+    /* extract system info */
+    rc = uname(&hellouts);
+    if (rc != 0) { (void) perror("uname()"); (void) exit(rc); return rc; }
 
-    (void) printf("S=%s, N=%s, R=%s, V=%s, M=%s\n",
-        unameuts.sysname,
-        unameuts.nodename,
-        unameuts.release,
-        unameuts.version,
-        unameuts.machine
-        );
+    /* report system info */
+    (void) printf("utsname.sysname=%s\n",hellouts.sysname);
+    (void) printf("utsname.nodename=%s\n",hellouts.nodename);
+    (void) printf("utsname.release=%s\n",hellouts.release);
+    (void) printf("utsname.version=%s\n",hellouts.version);
+    (void) printf("utsname.machine=%s\n",hellouts.machine);
 
 /*  (void) exit(0);  */
     return 0;
   }
 
-
 /*
-
        -a, --all = except omit -p and -i
        -p, --processor
        -i, --hardware-platform
        -o, --operating-system
        --help
-
  */
 
 
