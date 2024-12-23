@@ -1,14 +1,19 @@
 /*                                                                    *
  *                                                                    *
- *        Name: WHICH REXX (CMS Pipelines gem)                        *
- *        Date: 2010-May-20 (Thu)                                     *
+ *        Name: <various> EXEC                                        *
+ *        Date: 2006-May-23 (Monday)                                  *
  *              This program is part of the CMS Make package.         *
+ *              There's not much to the command this supports         *
+ *              other than to drive the pipeline of the same name.    *
+ *                                                                    *
+ *      Update: 2024-12-22 (Sun)                                      *
+ *              use filename rather than command as entered           *
  *                                                                    *
  *                                                                    */
 
-Parse Arg arg1 . '(' opts ')' .
-Parse Source . . . ft . arg0 .
-'pipe' arg0 arg1 ft '(' opts
+Parse Arg args
+Parse Source . . fn . . arg0 .
+'pipe' fn args
 Exit rc
 
 
