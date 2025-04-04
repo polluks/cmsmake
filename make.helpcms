@@ -33,7 +33,7 @@
 
 ¢|Targets¢%
 
-  A target is something you want made, typicaly a file.
+  A target is something you want made, typically a file.
   For example, the CMS file "MYPROG MODULE" ultimately depends on
   another CMS file "MYPROG ASSEMBLE". The rules file (the makefile)
   indicates how they are related and what commands must be issued

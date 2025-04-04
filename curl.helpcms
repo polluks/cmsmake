@@ -73,9 +73,9 @@ Where possible, CMS CURL uses the same return codes as POSIX CURL:
 
 .cm 17 FTP couldn't set binary. Couldn't change transfer method to binary.
 
-.cm 18 Partial file. Only a part of the file was transfered.
+.cm 18 Partial file. Only a part of the file was transferred.
 
-.cm 19 FTP couldn't download/access the given file, the RETR (or similar) comman
+.cm 19 FTP couldn't download/access the given file, the RETR (or similar) command
 
 .cm 20 FTP write error. The transfer was reported bad by the server.
 
@@ -218,9 +218,9 @@ cms make                CMS Make for file maintenance
 .cm           disable silent failure.
 .cm
 .cm        --ftp-pasv
-.cm           (FTP) Use PASV when transfering. PASV is the inter­
+.cm           (FTP) Use PASV when transferring. PASV is the inter­
 .cm           nal default behavior, but using this option can  be
-.cm           used  to  override  a  previos  --ftp-port  option.
+.cm           used  to  override  a  previous  --ftp-port  option.
 .cm           (Added in 7.11.0)
 .cm
 .cm           If this option is used twice, the second will again
@@ -246,7 +246,7 @@ cms make                CMS Make for file maintenance
 .cm
 .cm           curl -F password=@/etc/passwd www.mypasswords.com
 .cm
-.cm           To read the file's content from stdin insted  of  a
+.cm           To read the file's content from stdin instead of  a
 .cm           file,  use  -  where  the file name should've been.
 .cm           This goes for both @ and < constructs.
 .cm
@@ -321,7 +321,7 @@ cms make                CMS Make for file maintenance
 .cm           the $HOME/.curlrc file will not be read and used as
 .cm           a config file.
 .cm
-.cm        -Q/--quote <comand>
+.cm        -Q/--quote <command>
 .cm           (FTP)  Send  an arbitrary command to the remote FTP
 .cm           server, by using the QUOTE command of  the  server.
 .cm           Not  all  servers support this command, and the set
@@ -497,7 +497,7 @@ cms make                CMS Make for file maintenance
 .cm           time_starttransfer
 .cm                          The  time,  in seconds, it took from
 .cm                          the start until the  first  byte  is
-.cm                          just  about  to  be transfered. This
+.cm                          just  about  to be transferred. This
 .cm                          includes time_pretransfer  and  also
 .cm                          the  time the server needs to calcu­
 .cm                          late the result.
@@ -537,7 +537,7 @@ cms make                CMS Make for file maintenance
 .cm           to "" to override it.
 .cm
 .cm           Note that all operations that are performed over  a
-.cm           HTTP proxy will transparantly be converted to HTTP.
+.cm           HTTP proxy will transparently be converted to HTTP.
 .cm           It means that certain protocol specific  operations
 .cm           might not be available. This is not the case if you
 .cm           can tunnel through the  proxy,  as  done  with  the

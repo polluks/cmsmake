@@ -16,7 +16,7 @@ except that the Tab character can be ordinary white space.
 
 This is a really really simple implementation.
 The purpose is to allow a subset of `make` functionality
-which can be used interchangably between CMS and Unix/Linux/POSIX.
+which can be used interchangeably between CMS and Unix/Linux/POSIX.
 With care, common rules files can be crafted and. It works.
 
 Several commands which work like their Unix/Linux/POSIX counterparts
