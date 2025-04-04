@@ -49,7 +49,7 @@ Do While Left(arg1,1) = "-"
 End /* Do While */
 If entry ^= "" Then opt1 = "RESET" entry
 
-/* set TXTLIB search per this invokation */
+/* set TXTLIB search per this invocation */
 'PIPE COMMAND Q TXTLIB' ,
   '| NLOCATE 1.15 /TXTLIB   = NONE/' ,
   '| CHANGE 1.11 /TXTLIB   = //' ,

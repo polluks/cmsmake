@@ -35,7 +35,7 @@
       WGET     HELPCMS  *  -- help for the 'wget' workalike
       CURL     EXEC     *  -- the 'curl' command (wraps the pipeline)
       CURL     REXX     *  -- 'curl' as a CMS Pipelines stage
-      CURL     HELPCMS  *  -- help fo the 'curl' workalike
+      CURL     HELPCMS  *  -- help for the 'curl' workalike
       TOUCH    EXEC     *  -- stamp time/date on a file
       TOUCH    HELPCMS  *  -- help for 'touch' command
       RM       EXEC     *  -- Unix equivalent of 'delete'

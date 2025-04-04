@@ -6,7 +6,7 @@
  *                                                                    *
  *      Update: 2024-12-21 (Sat)                                      *
  *              add support for CP commands                           *
- *              honor IMPCP (we alreadh handle IMPEX)                 *
+ *              honor IMPCP (we already handle IMPEX)                 *
  *                                                                    *
  *                                                                    */
 
